@@ -26,7 +26,7 @@ public class MainPage {
     }
 
     public void clickOnQuestion(String questionIndex){
-        driver.findElement((By.id(questionLocatorTemplate + questionIndex))).click();
+        driver.findElement(By.id(questionLocatorTemplate + questionIndex)).click();
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id(answerLocatorTemplate + questionIndex)));
     }
@@ -34,4 +34,6 @@ public class MainPage {
     public String getAnswerText(String questionIndex){
         return driver.findElement(By.id(answerLocatorTemplate + questionIndex)).getText();
     }
+
+
 }
