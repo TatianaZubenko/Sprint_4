@@ -35,5 +35,9 @@ public class MainPage {
         return driver.findElement(By.id(answerLocatorTemplate + questionIndex)).getText();
     }
 
-
+    public void clickOrderButton(String startButton){
+        WebElement element = driver.findElement(By.xpath(startButton));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();",element);
+        driver.findElement(By.xpath(startButton)).click();
+    }
 }

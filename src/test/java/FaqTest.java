@@ -4,13 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.practicum.MainPage;
 
 import java.time.Duration;
@@ -27,7 +22,6 @@ public class FaqTest {
         this.answer = answer;
     }
 
-    //переписать ответы в объекте на правильные
     @Parameterized.Parameters
     public static Object[][] getData() {
         return new Object[][] {

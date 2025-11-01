@@ -2,18 +2,52 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.practicum.MainPage;
+import ru.yandex.practicum.OrderPage;
 
-import java.time.Duration;
 
+@RunWith(Parameterized.class)
 public class OrderTest {
 
     WebDriver driver;
+
+    private final String startButton;
+    private final String name;
+    private final String surname;
+    private final String address;
+    private final String metro;
+    private final String phoneNumber;
+    private final String deliveryDate;
+    private final String orderDuration;
+    private final String scooterColour;
+    private final String commentForCourier;
+
+    public OrderTest(String startButton, String name, String surname, String address, String metro, String phoneNumber, String deliveryDate, String orderDuration, String scooterColour, String commentForCourier) {
+        this.startButton = startButton;
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+        this.metro = metro;
+        this.phoneNumber = phoneNumber;
+        this.deliveryDate = deliveryDate;
+        this.orderDuration = orderDuration;
+        this.scooterColour = scooterColour;
+        this.commentForCourier = commentForCourier;
+    }
+
+    @Parameterized.Parameters
+    public static Object[][] getData() {
+        return new Object[][] {
+                {".//*[@class='Button_Button__ra12g']", "Иван", "Иванов", "г. Москва, ул. Спортивная, 48", "Комсомольская", "89998886644", "13.12.2025", "сутки", "black", "Хорошая погода"},
+                {".//div[@class='Home_FinishButton__1_cWm']//button[text()='Заказать']", "Петр", "Петров", "г. Москва, ул. Тверская, 25", "Спортивная", "89996665544", "16.12.2025", "двое суток", "grey", "Плохая погода"}
+        };
+    }
+
 
     @Before
     public void startUp() {
@@ -26,49 +60,37 @@ public class OrderTest {
 
     @Test
     public void orderTest(){
-        //нажимаем на кнопку "Заказать" в хеддере страницы
-        driver.findElement(By.className("Button_Button__ra12g")).click();
-        //ожидание перед открытием формы заказа
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//input[@placeholder='* Имя']")));
-        //заполняем поле "Имя"
-        driver.findElement(By.xpath("//input[@placeholder='* Имя']")).sendKeys("Иван");
+        MainPage objMainPage = new MainPage(driver);
+        OrderPage objOrderPage = new OrderPage(driver);
+
+        //скролл до нужного элемента и нажатие на кнопку "Заказать"
+        objMainPage.clickOrderButton(startButton);
+        //ожидание перед открытием формы заказа, заполняем поле "Имя"
+        objOrderPage.fillName(name);
         //заполняем поле "Фамилия"
-        driver.findElement(By.xpath("//input[@placeholder='* Фамилия']")).sendKeys("Иванов");
+        objOrderPage.fillSurname(surname);
         //заполняем поле "Адрес"
-        driver.findElement(By.xpath("//input[@placeholder='* Адрес: куда привезти заказ']")).sendKeys("г. Москва, ул. Спортивная, 48");
-        //заполняем поле "Метро"
-        driver.findElement(By.xpath("//input[@placeholder='* Станция метро']")).sendKeys("Комсомольская");
-        //кликаем на станцию метро в выпадающем списке
-        driver.findElement(By.xpath("//*[text()='Комсомольская']")).click();
+        objOrderPage.fillAddress(address);
+        //заполняем поле "Метро", кликаем на станцию метро в выпадающем списке
+        objOrderPage.fillMetro(metro);
         //заполняем поле "Телефон"
-        driver.findElement(By.xpath("//input[@placeholder='* Телефон: на него позвонит курьер']")).sendKeys("89998886644");
+        objOrderPage.fillPhoneNumber(phoneNumber);
         //нажимаем кнопку "Далее"
-        driver.findElement(By.xpath("//button[contains(@class, 'Button_Middle') and text()='Далее']")).click();
-        //ожидание следующей части формы заказа
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//input[@placeholder='* Когда привезти самокат']")));
-        //заполняем поле "Когда привезти самокат"
-        driver.findElement(By.xpath("//input[@placeholder='* Когда привезти самокат']")).sendKeys("29.10.2025");
-        //кликаем на дату в выпадающем календаре
-        driver.findElement(By.xpath(".//div[@class='react-datepicker__week']/*[@tabindex='0']")).click();
-        //кликаем на поле "Срок аренды"
-        driver.findElement(By.xpath("//div[text()='* Срок аренды']")).click();
-        //выбираем из выпадающего списка вариант
-        driver.findElement(By.xpath("//*[text()='сутки']")).click();
+        objOrderPage.clickButtonNext();
+        //ожидание следующей части формы заказа, заполняем поле "Когда привезти самокат", кликаем на дату в выпадающем календаре
+        objOrderPage.fillDeliveryDate(deliveryDate);
+        //кликаем на поле "Срок аренды", выбираем из выпадающего списка вариант
+        objOrderPage.fillOrderDuration(orderDuration);
         //выбираем цвет самоката чекбоксом
-        driver.findElement(By.id("black")).click();
+        objOrderPage.choiceOfScooterColour(scooterColour);
         //заполняем поле "Комментария для курьера"
-        driver.findElement(By.xpath("//input[@placeholder='Комментарий для курьера']")).sendKeys("Хорошая погода");
+        objOrderPage.fillCourierComment(commentForCourier);
         //нажимаем на кнопку "Заказать" внизу под формой
-        driver.findElement(By.xpath("//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Заказать']")).click();
+        objOrderPage.clickFinalOrderButton();
         //подтверждаем заказ, нажимая на кнопку "Да"
-        driver.findElement(By.xpath("//button[text()='Да']")).click();
-        //ожидание попапа "Заказ оформлен"
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[contains(text(), 'Заказ оформлен')]")));
-        //сравниваем текст попапа с "Заказ оформлен"
-        Assert.assertTrue(driver.findElement(By.className("Order_ModalHeader__3FDaJ")).getText().startsWith("Заказ оформлен"));
+        objOrderPage.clickButtonYes();
+        //ожидание попапа "Заказ оформлен", сравниваем текст попапа с "Заказ оформлен"
+        Assert.assertTrue(objOrderPage.getPopupText().startsWith("Заказ оформлен"));
 
     }
 
