@@ -1,7 +1,4 @@
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +10,9 @@ import java.time.Duration;
 
 @RunWith(Parameterized.class)
 public class FaqTest {
-    WebDriver driver;
+
+    @Rule
+    public DriverFactory factory = new DriverFactory();
 
     private final String questionIndex;
     private final String answer;
@@ -37,17 +36,11 @@ public class FaqTest {
         };
     }
 
-    @Before
-    public void startUp(){
-        //создаем вебдрайвер
-        //driver = new ChromeDriver();
-        //ссылка на стенд тестируемый
-        //driver.get(Constants.MAIN_PAGE_LINK);
-        //driver.manage().window().maximize();
-}
 
     @Test
     public void faqTest(){
+        WebDriver driver = factory.getDriver();
+
         //открываем тестируемый стенд
         driver.get(Constants.MAIN_PAGE_LINK);
 
@@ -63,13 +56,4 @@ public class FaqTest {
         Assert.assertEquals(answer, objMainPage.getAnswerText(questionIndex));
 
     }
-
-    @After
-    public void teardown(){
-        //закрыть браузер
-        driver.quit();
-    }
-
-
-
 }

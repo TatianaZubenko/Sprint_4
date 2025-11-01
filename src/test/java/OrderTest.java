@@ -1,7 +1,4 @@
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +12,8 @@ import ru.yandex.practicum.util.Constants;
 @RunWith(Parameterized.class)
 public class OrderTest {
 
-    WebDriver driver;
+    @Rule
+    public DriverFactory factory = new DriverFactory();
 
     private final String startButton;
     private final String name;
@@ -50,17 +48,11 @@ public class OrderTest {
     }
 
 
-    @Before
-    public void startUp() {
-        //создаем вебдрайвер
-        //driver = new FirefoxDriver();
-        //ссылка на стенд тестируемый
-        //driver.get(Constants.MAIN_PAGE_LINK);
-        //driver.manage().window().maximize();
-    }
 
     @Test
     public void orderTest(){
+        WebDriver driver = factory.getDriver();
+
         //открываем тестируемый стенд
         driver.get(Constants.MAIN_PAGE_LINK);
 
@@ -96,12 +88,6 @@ public class OrderTest {
         //ожидание попапа "Заказ оформлен", сравниваем текст попапа с "Заказ оформлен"
         Assert.assertTrue(objOrderPage.getPopupText().startsWith("Заказ оформлен"));
 
-    }
-
-    @After
-    public void teardown(){
-        //закрыть браузер
-        driver.quit();
     }
 
 }
