@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.yandex.practicum.MainPage;
 import ru.yandex.practicum.OrderPage;
+import ru.yandex.practicum.util.Constants;
 
 
 @RunWith(Parameterized.class)
@@ -52,14 +53,17 @@ public class OrderTest {
     @Before
     public void startUp() {
         //создаем вебдрайвер
-        driver = new FirefoxDriver();
+        //driver = new FirefoxDriver();
         //ссылка на стенд тестируемый
-        driver.get("https://qa-scooter.praktikum-services.ru/");
-        driver.manage().window().maximize();
+        //driver.get(Constants.MAIN_PAGE_LINK);
+        //driver.manage().window().maximize();
     }
 
     @Test
     public void orderTest(){
+        //открываем тестируемый стенд
+        driver.get(Constants.MAIN_PAGE_LINK);
+
         MainPage objMainPage = new MainPage(driver);
         OrderPage objOrderPage = new OrderPage(driver);
 

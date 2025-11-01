@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.practicum.util.Constants;
 
 import java.time.Duration;
 
@@ -27,7 +28,7 @@ public class MainPage {
 
     public void clickOnQuestion(String questionIndex){
         driver.findElement(By.id(questionLocatorTemplate + questionIndex)).click();
-        new WebDriverWait(driver, Duration.ofSeconds(10))
+        new WebDriverWait(driver, Duration.ofSeconds(Constants.EXPLICIT_WAIT))
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id(answerLocatorTemplate + questionIndex)));
     }
 
