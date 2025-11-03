@@ -2,11 +2,9 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import ru.yandex.practicum.MainPage;
 import ru.yandex.practicum.util.Constants;
 
-import java.time.Duration;
 
 @RunWith(Parameterized.class)
 public class FaqTest {
