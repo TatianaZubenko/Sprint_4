@@ -20,6 +20,8 @@ public class MainPage {
 
     String questionLocatorTemplate = "accordion__heading-";
     String answerLocatorTemplate = "accordion__panel-";
+    private final By topOrderButton = By.xpath(".//*[@class='Button_Button__ra12g']");
+    private final By middleOrderButton = By.xpath(".//div[@class='Home_FinishButton__1_cWm']//button[text()='Заказать']");
 
     public void scrollToFaq(String questionIndex){
         WebElement element = driver.findElement(By.id(questionLocatorTemplate + questionIndex));
@@ -36,9 +38,13 @@ public class MainPage {
         return driver.findElement(By.id(answerLocatorTemplate + questionIndex)).getText();
     }
 
-    public void clickOrderButton(String startButton){
-        WebElement element = driver.findElement(By.xpath(startButton));
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();",element);
-        driver.findElement(By.xpath(startButton)).click();
+    public void clickOrderButton(String startButton) {
+        if (startButton.equals("top")) {
+            driver.findElement(topOrderButton).click();
+        } else if (startButton.equals("middle")){
+            WebElement element = driver.findElement(middleOrderButton);
+            ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();",element);
+            driver.findElement(middleOrderButton).click();
+        }
     }
 }
